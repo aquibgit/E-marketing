@@ -1,0 +1,286 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - E-MARKET</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --border-color: #404040;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .py-5 {
+            padding: 4rem 0 !important;
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+        }
+
+        .product-image-card {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .product-image-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .product-image-card .card-img-top {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            padding: 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .product-info-card {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), #8b5cf6);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .product-info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        .btn-outline-danger {
+            background: transparent;
+            border: 2px solid #ef4444;
+            color: #ef4444;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline-danger:hover {
+            background: #ef4444;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .g-4 {
+            gap: 2rem !important;
+        }
+
+        /* Additional product details */
+        .product-meta {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .product-meta p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-meta strong {
+            color: var(--text-primary);
+        }
+
+        /* Remove any Bootstrap default card styles that might override our colors */
+        .card {
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        .card.shadow-sm {
+            box-shadow: none !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .product-title {
+                font-size: 2rem;
+            }
+            
+            .product-price {
+                font-size: 1.75rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-primary,
+            .btn-outline-danger,
+            .btn-success {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    {% include 'header.html' %}
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <!-- Product Image -->
+                <div class="col-lg-6">
+                    <div class="product-image-card">
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="col-lg-6">
+                    <div class="product-info-card">
+                        <h1 class="product-title">{{ product.name }}</h1>
+                        <p class="product-description">{{ product.description }}</p>
+                        <h2 class="product-price">₹{{ product.price }}</h2>
+
+                        <div class="action-buttons">
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
+                                <i class="fas fa-shopping-cart"></i>Add to Cart
+                            </a>
+                            <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-outline-danger">
+                                <i class="fas fa-heart"></i>Wishlist
+                            </a>
+                            <a href="{% url 'checkout_buy' product.id %}" class="btn btn-success">
+                                <i class="fas fa-bolt"></i>Buy Now
+                            </a>
+                        </div>
+
+                        <!-- Additional Product Details -->
+                        <div class="product-meta">
+                            <p><strong><i class="fas fa-truck me-2"></i>Delivery:</strong> Free delivery within 7 days</p>
+                            <p><strong><i class="fas fa-shield-alt me-2"></i>Warranty:</strong> 1 year manufacturer warranty</p>
+                            <p><strong><i class="fas fa-undo me-2"></i>Return Policy:</strong> 30 days return policy</p>
+                            {% if product.stock %}
+                                <p><strong><i class="fas fa-check-circle me-2"></i>Availability:</strong> In Stock ({{ product.stock }} units)</p>
+                            {% else %}
+                                <p><strong><i class="fas fa-times-circle me-2"></i>Availability:</strong> Out of Stock</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% include 'header.html' %}
+
+<div class="container py-5 text-center">
+    <h2 class="mb-4">Complete Payment</h2>
+    <h4>Amount: ₹{{ amount }}</h4>
+
+    <button id="rzp-button" class="btn btn-success btn-lg mt-4">
+        Pay with Razorpay
+    </button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    "key": "{{ razorpay_key }}",
+    "amount": "{{ amount|floatformat:2 }}" * 100,
+    "currency": "INR",
+    "name": "E-MARKET",
+    "description": "Order Payment",
+    "order_id": "{{ razorpay_order_id }}",
+    "handler": function (response){
+        window.location.href = "{% url 'payment_success' %}?payment_id=" + response.razorpay_payment_id;
+    },
+    "prefill": {
+        "name": "{{ user.name }}",
+        "email": "{{ user.email }}",
+        "contact": "{{ user.phone }}"
+    },
+    "theme": {
+        "color": "#6366f1"
+    }
+};
+
+var rzp = new Razorpay(options);
+document.getElementById('rzp-button').onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>
+
+{% include 'footer.html' %}

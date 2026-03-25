@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - E-MARKET</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --border-color: #404040;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Main Content */
+        .container {
+            padding: 2rem 0;
+        }
+
+        .text h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .text p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Registration Form */
+        .appointment {
+            padding: 2rem 0;
+        }
+
+        .form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 20px 40px var(--shadow-color);
+            position: relative;
+        }
+
+        .form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), #8b5cf6);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            background: var(--bg-secondary);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+            outline: none;
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        /* Password Container */
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .button .btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .button .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .login-link p {
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+
+        .login-link a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    {% include 'header.html' %}
+
+    <!-- Main Content -->
+    <div class="container">
+        <center>
+            <div class="text">
+                <h1>REGISTER</h1>
+                <p>Create your account to get started with our services.</p>
+            </div>
+        </center>
+    </div>
+
+    <!-- Registration Form -->
+    <section class="appointment">
+        <center>
+            <div class="container">
+                <form class="form" action="registeraction" method="post">
+                    {% csrf_token %} 
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 ">
+                            <div class="form-group">
+                                <input id="name" name="name" type="text" placeholder="Full Name" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 ">
+                            <div class="form-group">
+                                <input id="email" name="email" type="email" placeholder="Email" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 ">
+                            <div class="form-group">
+                                <input id="phone" name="phone" type="tel" placeholder="Phone Number" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 ">
+                            <div class="form-group">
+                                <div class="password-container">
+                                    <input id="password" name="password" type="password" placeholder="Password" required>
+                                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 ">
+                            <div class="form-group">
+                                <div class="button">
+                                    <button id="submitbttn" type="submit" class="btn">
+                                        <i class="fas fa-user-plus me-2"></i>REGISTER
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="login-link">
+                        <p>Already have an account? <a href="login">Login here</a></p>
+                    </div>
+                </form>				
+            </div>
+        </center>
+    </section>
+
+    {% include 'footer.html' %}
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.querySelector('.toggle-password');
+            const icon = toggleButton.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

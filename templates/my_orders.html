@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - E-MARKET</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --border-color: #404040;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .py-5 {
+            padding: 4rem 0 !important;
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .order-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .order-card .card-header {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .order-card .card-body {
+            padding: 1.5rem;
+            background: var(--bg-card);
+        }
+
+        .order-card p {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .order-card strong {
+            color: var(--text-primary);
+        }
+
+        .order-card hr {
+            border-color: var(--border-color);
+            margin: 1.5rem 0;
+        }
+
+        .order-card h6 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .order-card .list-unstyled {
+            color: var(--text-secondary);
+        }
+
+        .order-card .list-unstyled li {
+            padding: 0.25rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .order-card .list-unstyled li:last-child {
+            border-bottom: none;
+        }
+
+        .delivery-info {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .delivery-info .delivery-date {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .delivery-info .delivery-status {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .bg-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+        }
+
+        .bg-info {
+            background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+        }
+
+        .bg-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .empty-state h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .g-4 {
+            gap: 2rem !important;
+        }
+
+        /* Progress bar for delivery status */
+        .delivery-progress {
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .delivery-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #8b5cf6);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-processing { width: 25%; }
+        .progress-shipped { width: 60%; }
+        .progress-out-for-delivery { width: 85%; }
+        .progress-delivered { width: 100%; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .col-lg-6 {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    {% include 'header.html' %}
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center"><i class="fas fa-box me-3"></i>My Orders</h2>
+
+            {% if orders %}
+                <div class="row g-4">
+                    {% for order in orders %}
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <div class="card shadow-sm border-0 order-card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <span><i class="fas fa-receipt me-2"></i>Order #{{ order.id }}</span>
+                                    <span class="badge 
+                                        {% if order.status == 'Processing' %}bg-warning
+                                        {% elif order.status == 'Shipped' %}bg-info
+                                        {% elif order.status == 'Delivered' %}bg-success
+                                        {% elif order.status == 'Cancelled' %}bg-danger
+                                        {% endif %}">
+                                        {{ order.status }}
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong><i class="fas fa-user me-2"></i>Name:</strong> {{ order.full_name }}</p>
+                                    <p><strong><i class="fas fa-phone me-2"></i>Phone:</strong> {{ order.phone }}</p>
+                                    <p><strong><i class="fas fa-map-marker-alt me-2"></i>Address:</strong> {{ order.address }}</p>
+                                    <p><strong><i class="fas fa-calendar me-2"></i>Placed on:</strong> {{ order.created|date:"d M Y H:i" }}</p>
+                                    <p><strong><i class="fas fa-indian-rupee-sign me-2"></i>Total:</strong> ₹{{ order.amount|floatformat:2 }}</p>
+
+                                    <!-- Delivery Information -->
+                                    <div class="delivery-info">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="delivery-date">
+                                                <i class="fas fa-truck me-2"></i>
+                                                {% if order.status == 'Delivered' %}
+                                                    Delivered on {{ order.created|date:"d M Y" }}
+                                                {% elif order.status == 'Cancelled' %}
+                                                    Order Cancelled
+                                                {% else %}
+                                                    <!-- Calculate expected delivery: 7 days from order date -->
+                                                    {% with created_date=order.created %}
+                                                        {% with expected_delivery=created_date|date:"Y-m-d" %}
+                                                            Expected by {{ created_date|date:"d"|add:"7" }} {{ created_date|date:"M Y" }}
+                                                        {% endwith %}
+                                                    {% endwith %}
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Delivery Progress Bar -->
+                                        {% if order.status != 'Delivered' and order.status != 'Cancelled' %}
+                                        <div class="delivery-progress">
+                                            <div class="delivery-progress-bar 
+                                                {% if order.status == 'Processing' %}progress-processing
+                                                {% elif order.status == 'Shipped' %}progress-shipped
+                                                {% elif order.status == 'Out for Delivery' %}progress-out-for-delivery
+                                                {% elif order.status == 'Delivered' %}progress-delivered
+                                                {% endif %}">
+                                            </div>
+                                        </div>
+                                        <div class="delivery-status">
+                                            {% if order.status == 'Processing' %}
+                                                <i class="fas fa-clock me-1"></i> Order being processed
+                                            {% elif order.status == 'Shipped' %}
+                                                <i class="fas fa-shipping-fast me-1"></i> Shipped and in transit
+                                            {% elif order.status == 'Out for Delivery' %}
+                                                <i class="fas fa-truck-loading me-1"></i> Out for delivery today
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <hr>
+                                    <h6><i class="fas fa-shopping-bag me-2"></i>Items:</h6>
+                                    <ul class="list-unstyled mb-3">
+                                        {% for item in order.items.all %}
+                                            <li>
+                                                <i class="fas fa-cube me-2"></i>
+                                                {{ item.product.name }} × {{ item.quantity }} (₹{{ item.price|floatformat:2 }})
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+
+                                    {% if order.status != 'Delivered' and order.status != 'Cancelled' %}
+                                        <a href="{% url 'cancel_order' order.id %}" class="btn btn-danger"
+                                           onclick="return confirm('Are you sure you want to cancel this order?');">
+                                            <i class="fas fa-times me-2"></i>Cancel Order
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <h4>No Orders Yet</h4>
+                    <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+</body>
+</html>
+
+
+

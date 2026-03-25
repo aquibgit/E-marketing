@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - E-MARKET</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --border-color: #404040;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .py-5 {
+            padding: 4rem 0 !important;
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .checkout-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .checkout-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .checkout-card .card-header {
+            background: transparent;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        .checkout-card h4 {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .checkout-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .form-label {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: var(--bg-secondary);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item strong {
+            color: var(--text-primary);
+        }
+
+        .order-item .price {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            border-top: 2px solid var(--accent-color);
+        }
+
+        .order-total .amount {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .text-muted {
+            color: var(--text-secondary) !important;
+        }
+
+        .g-4 {
+            gap: 2rem !important;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    {% include 'header.html' %}
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center"><i class="fas fa-credit-card me-3"></i>Checkout</h2>
+
+            <div class="row g-4">
+                <!-- Billing Details -->
+                <div class="col-lg-6">
+                    <div class="checkout-card">
+                        <div class="card-header">
+                            <h4><i class="fas fa-user me-2"></i>Billing Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="mb-4">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" value="{{ user.name }}" placeholder="Enter your full name" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="address" class="form-label">Address</label>
+                                    <textarea name="address" id="address" class="form-control" rows="4" placeholder="Enter your complete address" required></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="text" name="phone" id="phone" class="form-control" value="{{ user.phone }}" placeholder="Enter your phone number" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-shopping-bag me-2"></i>Place Order
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-6">
+                    <div class="checkout-card">
+                        <div class="card-header">
+                            <h4><i class="fas fa-receipt me-2"></i>Order Summary</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                {% for item in cart_items %}
+                                    <div class="order-item">
+                                        <div>
+                                            <strong>{{ item.product.name }}</strong><br>
+                                            <small class="text-muted">Qty: {{ item.quantity }}</small>
+                                        </div>
+                                        <div class="price">₹{{ item.total_price|floatformat:2 }}</div>
+                                    </div>
+                                {% empty %}
+                                    <p class="text-muted text-center py-3">Your cart is empty.</p>
+                                {% endfor %}
+                                <div class="order-total">
+                                    <span>Total Amount:</span>
+                                    <span class="amount">₹{{ total|floatformat:2 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
