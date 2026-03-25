@@ -20,7 +20,4 @@ A full-stack e-commerce web application built using Django, featuring product ma
 3. Run server:
    python manage.py runserver
 
-## Future Improvements
-- Payment gateway integration
-- Recommendation system
-- Deployment to cloud
+
